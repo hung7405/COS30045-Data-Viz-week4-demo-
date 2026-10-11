@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV Energy in Australia — Executive Data Story | COS30045</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <img src="images/PowerIcon.png" alt="Energy logo">
+      <div class="brand-text"><strong>TV Energy · Australia</strong><span>COS30045 Data Visualisation — Executive Story</span></div>
+    </div>
+    <nav aria-label="Main navigation">
+      <button id="homeNav" onclick="showPage('home')" class="active">Home</button>
+      <button id="televisionsNav" onclick="showPage('televisions')">Data Story</button>
+      <button id="aboutNav" onclick="showPage('about')">About</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ============ HOME ============ -->
+<section id="home" class="page visible">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <span class="eyebrow">Australian Energy Rating · Feb 2026 dataset</span>
+        <h1>Which TV should Australia buy <em>to save power?</em></h1>
+        <p class="lead">Analysis of <strong>4,508 TV models</strong> actually on sale in Australia. From market overview to a clear buying recommendation — in one scroll, built for decision-makers.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="showPage('televisions')">Read the 2-minute story →</button>
+          <button class="btn btn-ghost" onclick="showPage('about')">About data &amp; method</button>
+        </div>
+      </div>
+      <div class="kpi-panel">
+        <div class="kpi"><div class="num">4,508</div><div class="lbl">TV models on sale in AU</div></div>
+        <div class="kpi light"><div class="num">81%</div><div class="lbl">are LCD (LED) — market standard</div></div>
+        <div class="kpi light"><div class="num">40W → 197W</div><div class="lbl">Small vs Large avg. power (5× gap)</div></div>
+        <div class="kpi"><div class="num">LCD wins</div><div class="lbl">Lowest power in every size class</div></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Try it: energy cost calculator</h2>
+    <p class="section-sub"><strong>Same idea as the reference design:</strong> pick a preset (real KNIME means) or type watts → hours → price → <strong>Update estimate</strong>. Result shows day / month / year.</p>
+    <div class="calc-device ref" id="billCalc">
+      <div class="ref-head"><span>INTERACTIVE TOOL</span><span class="live-pill">Live estimate</span></div>
+      <h3 class="ref-title">Energy cost calculator</h3>
+      <label class="ref-lbl">Quick appliance preset <span class="ref-hint">(from this project's KNIME means)</span></label>
+      <select id="calcPreset" class="ref-input">
+        <option value="105.5" selected>55" Medium TV — 105.5W (best seller)</option>
+        <option value="40.7">32" Small TV — 40.7W</option>
+        <option value="196.5">75" Large TV — 196.5W</option>
+        <option value="custom">Enter a custom wattage…</option>
+      </select>
+      <div class="ref-2col">
+        <div><label class="ref-lbl">Power usage</label><div class="ref-box"><input type="number" id="calcW" value="105.5" min="1" max="2000"><span>W</span></div></div>
+        <div><label class="ref-lbl">Use per day</label><div class="ref-box"><input type="number" id="calcH" value="5" min="0" max="24" step="0.5"><span>hrs</span></div></div>
+      </div>
+      <label class="ref-lbl">Electricity price</label>
+      <div class="ref-box"><input type="number" id="calcR" value="32" min="5" max="100" step="1"><span>¢/kWh</span></div>
+      <p class="ref-hint">Check your latest electricity bill for your usage rate. 32¢ = $0.32/kWh.</p>
+      <button class="ref-btn" id="calcGo">Update estimate</button>
+      <div class="ref-result">
+        <div class="ref-row"><span>Estimated yearly cost <small>based on 365 days</small></span><strong id="calcCost">$61.61</strong></div>
+        <div class="ref-grid">
+          <div><span>Daily energy</span><strong id="calcDaily">0.53 kWh</strong></div>
+          <div><span>Monthly energy</span><strong id="calcMonthly">16.0 kWh</strong></div>
+          <div><span>Yearly energy</span><strong id="calcKwh">192.5 kWh</strong></div>
+          <div><span>Monthly cost</span><strong id="calcMonthlyCost">$5.13</strong></div>
+        </div>
+        <p class="ref-formula" id="calcMeta">105.5W × 5h × 365 ÷ 1000 = 192.5 kWh × $0.32</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Storyboard — read each chart in 10 seconds</h2>
+    <p class="section-sub">Yellow = the one number to remember. Green = what to do with it.</p>
+    <div class="hl-grid">
+      <div class="hl"><div class="hl-n">01</div><div><h4>Tech share — who owns the market?</h4><p class="hl-big">81% LCD (LED)</p><p>OLED is bigger on average (65"), so never compare raw averages.</p></div></div>
+      <div class="hl"><div class="hl-n">02</div><div><h4>Sizes — where is demand?</h4><p class="hl-big">55" &amp; 65" peaks</p><p>Bump at 150–175 cm = real large TVs (checked Model_No).</p></div></div>
+      <div class="hl"><div class="hl-n">03</div><div><h4>Brands — who fills shelves?</h4><p class="hl-big">SAMSUNG 1,096</p><p>Kogan 788 · LG 677. Top 3 hold over half of 4,508 models.</p></div></div>
+      <div class="hl star"><div class="hl-n">04 ★</div><div><h4>Fair fight — same size, who wins?</h4><p class="hl-big">LCD wins all sizes</p><p>35 / 100 / 174W. OLED ≈ LED in medium &amp; large. Note: small-OLED n=17.</p></div></div>
+      <div class="hl"><div class="hl-n">05</div><div><h4>Size → bill, stars → efficiency</h4><p class="hl-big">40W → 197W</p><p>Power rises with size; stars stay flat (size-adjusted index).</p></div></div>
+      <div class="hl"><div class="hl-n">06</div><div><h4>Proof pair (Ex2)</h4><p class="hl-big">3 bars + avg size</p><p>Why Chart 04 must control for size. Mean for Watts, median for Stars.</p></div></div>
+    </div>
+    <div class="rec-box">
+      <h3>✔ Recommendation — what should Australia buy?</h3>
+      <ol>
+        <li><strong>Size first — biggest saving.</strong> Large ≈ 197W vs small ≈ 41W (≈5×). Dropping one class (large → medium) saves ~90W ≈ <strong>$50+/year</strong> at 5h/day, 32¢/kWh. Try it in the calculator above.</li>
+        <li><strong>Tech second.</strong> Same size → pick <strong>LCD</strong> for lowest bill; LED is the safe mainstream; OLED only if you accept extra Watts (worst in small sizes).</li>
+        <li><strong>Stars the right way.</strong> Compare stars <em>only within the same size</em>. A big 8★ still costs more than a small 6★.</li>
+      </ol>
+      <p class="rec-ex">Example to tell the teacher: <em>"A 55" medium (105.5W, 5h/day) costs ~$62/year; the same use on a 75" large (196.5W) costs ~$115/year — same movie, +$53/year."</em></p>
+    </div>
+
+    <h2 class="section-title">How to read this story (30 seconds)</h2>
+    <p class="section-sub">Designed for a busy executive: each card follows <strong>Question → Chart → So what?</strong> Follow steps 01–06 in order.</p>
+    <div class="info-grid">
+      <div class="info-box"><h2>Why efficiency matters</h2><p>Efficient TVs cut household bills and peak load. Size matters far more than brand: moving from a large (&gt;66") to a medium (44–65") TV saves on average ~90W in typical viewing mode.</p></div>
+      <div class="info-box"><h2>What this proves</h2><p>Screen technology share, dominant sizes (55" &amp; 65"), brand concentration (Top 3 hold &gt;50%), and like-for-like power comparison controlled by size — so OLED vs LED is compared fairly.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATA STORY ============ -->
+<section id="televisions" class="page">
+  <div class="wrap">
+    <span class="eyebrow">Data story · live from KNIME</span>
+    <h1 style="color:var(--navy);margin:8px 0 6px;font-size:clamp(26px,3.4vw,38px)">Television energy in Australia, explained for buyers</h1>
+    <p class="section-sub">All charts are drawn <strong>live with D3.js</strong> from KNIME-cleaned CSVs (<code>knime_output/*.csv</code>). Re-run the KNIME workflow → overwrite CSV → refresh this page. Dataset: <code>tv_2026_02_15.csv</code>, 4,508 models Available &amp; sold in Australia.</p>
+
+    <div class="story">
+      <!-- 01 -->
+      <article class="card">
+        <div class="card-head"><div class="step">01</div><div><div class="q">Market landscape</div><h2>What screen technologies are Australians actually choosing from?</h2></div></div>
+        <div class="chart-grid">
+          <div><div class="live-chart" id="chart1"></div><div class="chart-fallback" id="fb1"><img src="images/Q1.png" alt="Pie chart fallback"></div></div>
+          <aside class="side"><h3>So what? — for the boss</h3>
+            <ul class="insight-list"><li><strong>LCD (LED) dominates:</strong> ~3,658 models (81%).</li><li>LCD: 562 · OLED: 288. OLED is premium-niche, larger on average (65.0").</li><li>Any fair power comparison <strong>must control for size</strong>.</li></ul>
+            <div class="takeaway">✔ Message: benchmark against LED — that is the market.</div>
+            <div class="src">Live: <code>knime_output/SizeTech_clean.csv</code> · KNIME GroupBy count on Screen_Tech</div>
+          </aside>
+        </div>
+      </article>
+      <!-- 02 -->
+      <article class="card">
+        <div class="card-head"><div class="step">02</div><div><div class="q">Size demand</div><h2>Which screen sizes dominate? Where is the sweet spot?</h2></div></div>
+        <div class="chart-grid">
+          <div><div class="live-chart" id="chart2"></div><div class="chart-fallback" id="fb2"><img src="images/Q2.png" alt="Bar chart fallback"></div></div>
+          <aside class="side"><h3>So what?</h3>
+            <ul class="insight-list"><li>Range ~15–115" (39–293 cm, via KNIME <code>inch = cm / 2.54</code>).</li><li><strong>Peaks at 55" (138.8 cm) &amp; 65" (163.9 cm)</strong> — the volume segment.</li><li>Small bumps at 150–175 cm verified via Model_No (58"/65"/70") — real large TVs, not errors.</li></ul>
+            <div class="takeaway">✔ Message: 55–65" is where efficiency advice has the biggest impact.</div>
+            <div class="src">Live: <code>SizeTech_clean.csv</code> · binned by rounded inch</div>
+          </aside>
+        </div>
+      </article>
+      <!-- 03 -->
+      <article class="card">
+        <div class="card-head"><div class="step">03</div><div><div class="q">Brand concentration</div><h2>Who fills the shelves? Top 10 brands by model count</h2></div></div>
+        <div class="chart-grid">
+          <div><div class="live-chart" id="chart3"></div><div class="chart-fallback" id="fb3"><img src="images/Q3.png" alt="Brand chart fallback"></div></div>
+          <aside class="side"><h3>So what?</h3>
+            <ul class="insight-list"><li>After cleaning (UPPERCASE + SAMSUNG ELECTRONICS→SAMSUNG, Q.BELL→QBELL; Available + SoldIn contains Australia): <strong>75 brands, 4,508 models</strong>.</li><li><strong>SAMSUNG 1,096 · KOGAN 788 · LG 677</strong> — Top 3 &gt; 50% of models.</li><li>Long tail of 65 small brands — choice is wide but concentrated.</li></ul>
+            <div class="takeaway">✔ Message: regulate / engage Top 3 and you cover most of the market.</div>
+            <div class="src">Live: <code>knime_output/BrandCount_clean.csv</code></div>
+          </aside>
+        </div>
+      </article>
+      <!-- 04 -->
+      <article class="card">
+        <div class="card-head"><div class="step">04</div><div><div class="q">Like-for-like efficiency — the key chart</div><h2>Which technology uses the least power <u>at the same size?</u></h2></div></div>
+        <div class="chart-grid">
+          <div><div class="pivot-toggle" style="padding:10px 18px 0;display:flex;gap:8px;align-items:center;font-size:13px;color:#5d6b7f;">
+            <span>Sample:</span>
+            <button id="pivotRaw" class="btn btn-ghost" style="padding:6px 14px;font-size:13px;" onclick="setPivot('raw')">Raw (n unequal)</button>
+            <button id="pivotBal" class="btn btn-ghost" style="padding:6px 14px;font-size:13px;" onclick="setPivot('balanced')">Balanced (equal/tech)</button>
+          </div><div class="pivot-table" id="pivotTable" style="padding:6px 18px 14px;font-size:12.5px;"></div><div class="live-chart" id="chart4"></div><div class="chart-fallback" id="fb4"><img src="images/Q4.png" alt="Grouped bar fallback"></div></div>
+          <aside class="side"><h3>So what?</h3>
+            <ul class="insight-list"><li><strong>LCD is lowest in all 3 sizes (mean ± 95% CI):</strong> Small 35.2±1.7W (n=236, med 32.4) · Medium 100.1±4.4W (n=215) · Large 174.1±15.6W (n=111, med 141.1).</li><li>Medium: OLED 100.8±3.7W (n=173) ≈ LED 106.6±1.9W (n=1,661) · Large: OLED 195.7±14.0W (n=98) ≈ LED 198.8±4.0W (n=1,143).</li><li>Overall averages mislead because OLEDs are bigger on average (Chart 06 right).</li></ul>
+            <div class="warn">⚠ OLED-small has only n=17 — shown faded with red outline, read with caution. Flip the <strong>Balanced (equal/tech)</strong> toggle above for the fair fight at equal sample sizes.</div>
+            <div class="takeaway">✔ Recommendation: for lowest running cost, pick LCD; if you want OLED/LED, stay in medium size. Balanced check (equal/tech: small 17 · medium 173 · large 98, seed 2026) keeps the same ranking — LCD lowest in every size.</div>
+            <div class="src">Live: <code>knime_output/Pivot_Tech_x_Size_stats.csv</code> · mean/median/std/n/CI95 per Tech×Size (CI = 1.96·sd/√n)</div>
+          </aside>
+        </div>
+      </article>
+      <!-- 05 -->
+      <article class="card">
+        <div class="card-head"><div class="step">05</div><div><div class="q">Size → power &amp; stars</div><h2>Bigger screen = bigger bill. But stars don't fall with size.</h2></div></div>
+        <div class="chart-grid">
+          <div><div class="live-chart" id="chart5"></div><div class="live-chart" id="chart6"></div><div class="chart-fallback" id="fb5"><img src="images/Q5.png" alt="Scatter fallback"></div></div>
+          <aside class="side"><h3>So what?</h3>
+            <ul class="insight-list"><li><strong>Power rises strongly with size:</strong> small ~40.7W → medium ~105.5W → large ~196.5W.</li><li><strong>Star2 shows no clear trend with size</strong> — expected: Star is a size-adjusted efficiency index, not raw Watts.</li><li>Compare Stars only within similar size; compare Watts/kWh for bills.</li></ul>
+            <div class="takeaway">✔ Buying rule: first pick the smallest size you'll enjoy, then pick the highest stars <em>in that size</em>.</div>
+            <div class="src">Live: <code>SizeTech_clean.csv</code> · X=screensize_inch, Y=Avg_mode_power / Star2</div>
+          </aside>
+        </div>
+      </article>
+      <!-- 06 : Ex2 DQ2c + DQ3b — the two charts you were missing -->
+      <article class="card">
+        <div class="card-head"><div class="step">06</div><div><div class="q">Ex2 required comparisons</div><h2>Average power by size class &amp; average size by technology</h2></div></div>
+        <div class="chart-grid">
+          <div><div class="live-chart" id="chart7a"></div><div class="live-chart" id="chart7b"></div></div>
+          <aside class="side"><h3>So what?</h3>
+            <ul class="insight-list"><li><strong>Left (DQ2c):</strong> the persuasion chart — 3 bars small/medium/large replace 30+ inch bars when convincing someone to downsize.</li><li><strong>Right (DQ3b):</strong> proves why overall tech comparison is unfair — OLED 65.0" &gt; LED 59.5" &gt; LCD 50.6", so Chart 04 controls for size via Pivot.</li><li>Star2 note: mean suits Watts/kWh; Star is an ordinal size-adjusted index — compare with median/distribution, not mean Watts.</li></ul>
+            <div class="takeaway">✔ With these 2 added, you cover all 7 KNIME visuals from Ex2.</div>
+            <div class="src">Computed live in browser from <code>SizeTech_clean.csv</code> (same GroupBy logic as KNIME)</div>
+          </aside>
+        </div>
+      </article>
+    </div>
+
+    <div class="verdict">
+      <h2>Executive verdict — what should we tell shoppers?</h2>
+      <div><strong>1 · Size first</strong><p>Size drives ~5× power gap (40W → 197W). Downsizing one class saves more than switching brands.</p></div>
+      <div><strong>2 · Tech second</strong><p>At equal size, LCD is leanest. LED is the safe mainstream; OLED costs extra Watts mainly in small sizes.</p></div>
+      <div><strong>3 · Stars done right</strong><p>Use Stars to compare efficiency <em>within</em> a size, not across sizes. A big 8-star TV still uses more power than a small 6-star one.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="page">
+  <div class="wrap">
+    <span class="eyebrow">Method &amp; transparency</span>
+    <h1 style="color:var(--navy)">About this project</h1>
+    <p class="section-sub">COS30045 Data Visualisation · Dataset <code>tv_2026_02_15.csv</code> (4,724 rows, 32 cols, downloaded 15 Feb 2026 via data.gov.au) · Pinned Feb-15 version.</p>
+    <div class="info-grid">
+      <div class="info-box"><h2>Audience &amp; story</h2><p>Australian shoppers comparing TVs. Flow: market → size → brand → fair power comparison → buying rule. Storyboard in <code>images/storyboard.png</code>.</p></div>
+      <div class="info-box"><h2>Data processing (KNIME)</h2><p>Ex1 BrandCount: clean Brand_Reg, filter Available + SoldIn contains Australia → 4,508 rows, 75 brands → GroupBy/Sorter → <code>BrandCount_clean.csv</code>. Ex2: <code>inch = cm/2.54</code>, size_category (small &lt;43 / medium ≤65 / large), GroupBy + Pivot mean power → <code>SizeTech_clean.csv</code>, <code>Pivot_Tech_x_Size_mean_power.csv</code>.</p></div>
+      <div class="info-box"><h2>Accuracy, privacy &amp; ethics</h2><p>Snapshot catalogue Feb-2026 (no sales, price or date-sold columns — popularity = shelf share, not sales share; no time-series claims). Product data, no personal info. Availability changes monthly. Small cells (n&lt;30, e.g. small-OLED n=17) excluded from Chart 04; LED 3,658 vs OLED 288 is imbalanced — Chart 04 toggle shows the equal-sample check. Charts show association, not causation; no brand is promoted.</p></div>
+      <div class="info-box"><h2>Tech &amp; AI declaration</h2><p>HTML/CSS/JS + vendored D3.js, GitHub + Vercel. AI (Copilot / generative AI) assisted with small code suggestions, KNIME error explanations and wording — all output was reviewed and understood by the author.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><strong>Truong Viet Hung — 104775470</strong> · COS30045 Data Visualisation · TV Energy Australia · GenAI-assisted, author-verified</footer>
+
+<script src="js/d3.min.js"></script>
+<script src="script.js"></script>
+<script>
+(function () {
+  var TECH_COLORS = { "LCD": "#56B4E9", "LCD (LED)": "#0072B2", "OLED": "#E69F00" };
+  var tooltip = d3.select("body").append("div").attr("class", "d3-tooltip")
+    .style("position", "absolute").style("visibility", "hidden")
+    .style("background", "rgba(15,42,68,.94)").style("color", "#fff")
+    .style("padding", "8px 12px").style("border-radius", "8px")
+    .style("font-size", "13px").style("pointer-events", "none").style("z-index", "1000");
+  function showTip(e, h) { tooltip.html(h).style("visibility", "visible").style("left", (e.clientX + 14 + window.scrollX) + "px").style("top", (e.clientY - 10 + window.scrollY) + "px"); }
+  function hideTip() { tooltip.style("visibility", "hidden"); }
+  function fail(id, fb, msg) {
+    var box = document.getElementById(id);
+    if (box) box.innerHTML = '<div class="chart-error">' + msg + '</div>';
+    var f = document.getElementById(fb);
+    if (f) f.style.display = "block";
+    console.error(msg);
+  }
+  function baseSvg(id) {
+    var box = document.getElementById(id);
+    var w = (box.clientWidth || 560); var h = 330;
+    d3.select(box).selectAll("*").remove();
+    var svg = d3.select(box).append("svg").attr("viewBox", "0 0 " + w + " " + h).attr("width", "100%").attr("height", h).attr("role", "img");
+    return { svg: svg, w: w, h: h, m: { top: 34, right: 14, bottom: 44, left: 52 } };
+  }
+  function title(b, t) { b.svg.append("text").attr("x", b.w / 2).attr("y", 18).attr("text-anchor", "middle").attr("font-size", "14px").attr("font-weight", "800").attr("fill", "#0f2a44").text(t); }
+  function xLab(b, t) { b.svg.append("text").attr("x", (b.m.left + b.w - b.m.right) / 2).attr("y", b.h - 6).attr("text-anchor", "middle").attr("font-size", "11.5px").attr("fill", "#5d6b7f").text(t); }
+  function yLab(b, t) { b.svg.append("text").attr("transform", "rotate(-90)").attr("x", -(b.m.top + b.h - b.m.bottom) / 2).attr("y", 13).attr("text-anchor", "middle").attr("font-size", "11.5px").attr("fill", "#5d6b7f").text(t); }
+
+  function drawPie(data) {
+    var b = baseSvg("chart1"); title(b, "Screen technology share (n=4,508)");
+    var r = Math.min(b.w, b.h) / 2 - 34;
+    var g = b.svg.append("g").attr("transform", "translate(" + b.w / 2 + "," + (b.h / 2 + 10) + ")");
+    var pie = d3.pie().value(function (d) { return d.n; }).sort(null);
+    var arc = d3.arc().innerRadius(r * 0.45).outerRadius(r);
+    var total = d3.sum(data, function (d) { return d.n; });
+    g.selectAll("path").data(pie(data)).enter().append("path")
+      .attr("d", arc).attr("fill", function (d) { return TECH_COLORS[d.data.tech] || "#999"; })
+      .attr("stroke", "#fff").attr("stroke-width", 2)
+      .on("mousemove", function (e, d) { showTip(e, "<strong>" + d.data.tech + "</strong><br>" + d.data.n.toLocaleString() + " models (" + (d.data.n / total * 100).toFixed(1) + "%)"); })
+      .on("mouseout", hideTip);
+    g.selectAll("text").data(pie(data)).enter().append("text")
+      .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("text-anchor", "middle").attr("font-size", "12px").attr("font-weight", "800").attr("fill", "#fff")
+      .text(function (d) { return (d.data.n / total >= 0.06) ? (d.data.n / total * 100).toFixed(0) + "%" : ""; });
+    var lg = b.svg.append("g").attr("transform", "translate(" + (b.w / 2 - 130) + "," + (b.h - 12) + ")");
+    data.forEach(function (d, i) {
+      var it = lg.append("g").attr("transform", "translate(" + (i * 105) + ",0)");
+      it.append("rect").attr("width", 12).attr("height", 12).attr("rx", 3).attr("fill", TECH_COLORS[d.tech] || "#999");
+      it.append("text").attr("x", 16).attr("y", 10).attr("font-size", "11px").attr("fill", "#333").text(d.tech + " " + d.n.toLocaleString());
+    });
+  }
+
+  function drawSizes(data) {
+    var b = baseSvg("chart2"); title(b, "Most common screen sizes (by inch)"); xLab(b, "Screen size (inches)"); yLab(b, "Models");
+    var x = d3.scaleBand().domain(data.map(function (d) { return d.inch; })).range([b.m.left, b.w - b.m.right]).padding(0.15);
+    var y = d3.scaleLinear().domain([0, d3.max(data, function (d) { return d.n; })]).nice().range([b.h - b.m.bottom, b.m.top]);
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")")
+      .call(d3.axisBottom(x).tickValues(x.domain().filter(function (v, i) { return i % 4 === 0; }))).selectAll("text").attr("font-size", "10px");
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).ticks(5)).selectAll("text").attr("font-size", "10px");
+    b.svg.selectAll("rect").data(data).enter().append("rect")
+      .attr("x", function (d) { return x(d.inch); }).attr("y", function (d) { return y(d.n); })
+      .attr("width", x.bandwidth()).attr("height", function (d) { return b.h - b.m.bottom - y(d.n); })
+      .attr("rx", 3).attr("fill", "#0072B2").attr("opacity", function (d) { return (d.inch === 55 || d.inch === 65) ? 1 : 0.55; })
+      .on("mousemove", function (e, d) { showTip(e, "<strong>" + d.inch + "\"</strong><br>" + d.n + " models"); })
+      .on("mouseout", hideTip);
+  }
+
+  function drawBrands(data) {
+    var b = baseSvg("chart3"); title(b, "Top 10 brands by model count");
+    b.m.left = 108; b.m.right = 56;
+    var y = d3.scaleBand().domain(data.map(function (d) { return d.brand; })).range([b.m.top, b.h - b.m.bottom]).padding(0.28);
+    var x = d3.scaleLinear().domain([0, d3.max(data, function (d) { return d.count; })]).nice().range([b.m.left, b.w - b.m.right]);
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).tickSize(0)).selectAll("text").attr("font-size", "11.5px").attr("font-weight", "600");
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")").call(d3.axisBottom(x).ticks(4)).selectAll("text").attr("font-size", "10px");
+    xLab(b, "Number of models");
+    var max = d3.max(data, function (d) { return d.count; });
+    b.svg.selectAll("rect").data(data).enter().append("rect")
+      .attr("y", function (d) { return y(d.brand); }).attr("x", b.m.left).attr("height", y.bandwidth()).attr("rx", 5)
+      .attr("width", function (d) { return x(d.count) - b.m.left; })
+      .attr("fill", function (d) { return d.count === max ? "#c9970d" : "#0f2a44"; })
+      .on("mousemove", function (e, d) { showTip(e, "<strong>" + d.brand + "</strong><br>" + d.count.toLocaleString() + " models"); })
+      .on("mouseout", hideTip);
+    b.svg.selectAll("text.val").data(data).enter().append("text").attr("class", "val")
+      .attr("x", function (d) { return x(d.count) + 6; }).attr("y", function (d) { return y(d.brand) + y.bandwidth() / 2 + 4; })
+      .attr("font-size", "11px").attr("font-weight", "700").attr("fill", "#0f2a44").text(function (d) { return d.count.toLocaleString(); });
+  }
+
+  function drawPivotTable(stats, isBalanced) {
+    var el = document.getElementById("pivotTable");
+    if (!el || !stats || !stats.length) return;
+    var cats = ["small", "medium", "large"];
+    var labels = { small: 'Small (<43")', medium: 'Medium (44–65")', large: 'Large (>66")' };
+    var get = function (t, c) { var s = stats.find(function (x) { return x.Screen_Tech === t && x.size_category === c; }); return s || null; };
+    var h = '<table style="width:100%;border-collapse:collapse;color:#0f2a44;">'
+      + '<caption style="text-align:left;font-weight:800;font-size:12.5px;padding:4px 0;">Stats behind the chart (mean ± 95% CI · median · n)</caption>'
+      + '<tr style="border-bottom:2px solid #0f2a44;"><th style="text-align:left;padding:4px 6px;">Tech</th>'
+      + cats.map(function (c) { return '<th style="text-align:right;padding:4px 6px;">' + labels[c] + '</th>'; }).join('') + '</tr>';
+    ["LCD", "LCD (LED)", "OLED"].forEach(function (t) {
+      h += '<tr style="border-bottom:1px solid #e3e9f0;"><td style="padding:4px 6px;font-weight:700;">' + t + '</td>';
+      cats.forEach(function (c) {
+        var s = get(t, c);
+        if (!s) { h += '<td style="text-align:right;padding:4px 6px;color:#999;">—</td>'; return; }
+        if (s.n < 30 && !isBalanced) { h += '<td style="text-align:right;padding:4px 6px;background:#fdf0f0;">' + s.mean_W.toFixed(1) + ' ± ' + s.ci95.toFixed(1) + 'W<br><span style="color:#d64545;font-weight:700;">⚠ n=' + s.n + ' — low confidence</span></td>'; return; }
+        h += '<td style="text-align:right;padding:4px 6px;">' + s.mean_W.toFixed(1) + ' ± ' + s.ci95.toFixed(1) + 'W<br><span style="color:#5d6b7f;">med ' + s.median_W.toFixed(1) + ' · n=' + s.n.toLocaleString() + '</span></td>';
+      });
+      h += '</tr>';
+    });
+    el.innerHTML = h + '</table>';
+  }
+
+  function drawPivot(stats, isBalanced) {
+    if (!stats || !stats.length) return;
+    // stats: long format [{Screen_Tech, size_category, mean_W, median_W, std_W, n, ci95}]
+    var b = baseSvg("chart4");
+    b.m.top = 58; // room: title (y=16) + legend row (y=36)
+    b.svg.append("text").attr("x", b.w / 2).attr("y", 16).attr("text-anchor", "middle")
+      .attr("font-size", "13.5px").attr("font-weight", "800").attr("fill", "#0f2a44")
+      .text("Mean power (W) ± 95% CI — same size, fair comparison");
+    xLab(b, "Size category"); yLab(b, "Mean power (W)");
+    var techs = ["LCD", "LCD (LED)", "OLED"];
+    var cats = ["small", "medium", "large"];
+    var labels = { small: 'Small (<43")', medium: 'Medium (44–65")', large: 'Large (>66")' };
+    var get = function (t, c) { return stats.find(function (s) { return s.Screen_Tech === t && s.size_category === c; }); };
+    var validStats = stats.filter(function (s) { return s.n >= 30; });
+    var mx = d3.max(validStats, function (s) { return s.mean_W + s.ci95; });
+    var x0 = d3.scaleBand().domain(cats).range([b.m.left, b.w - b.m.right]).padding(0.28);
+    var x1 = d3.scaleBand().domain(techs).range([0, x0.bandwidth()]).padding(0.22);
+    var y = d3.scaleLinear().domain([0, mx * 1.25]).nice().range([b.h - b.m.bottom, b.m.top]);
+    // legend row under title (left aligned, no overlap)
+    var lg = b.svg.append("g").attr("transform", "translate(" + b.m.left + ",36)");
+    techs.forEach(function (t, i) {
+      var it = lg.append("g").attr("transform", "translate(" + (i * 110) + ",0)");
+      it.append("rect").attr("width", 12).attr("height", 12).attr("rx", 3).attr("fill", TECH_COLORS[t]);
+      it.append("text").attr("x", 16).attr("y", 10).attr("font-size", "11px").attr("fill", "#333").text(t);
+    });
+    lg.append("text").attr("x", 3 * 110).attr("y", 10).attr("font-size", "10px").attr("fill", "#5d6b7f")
+      .text("whisker = 95% CI · ○ = median");
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")")
+      .call(d3.axisBottom(x0).tickFormat(function (c) { return labels[c]; })).selectAll("text").attr("font-size", "10.5px").attr("font-weight", "600");
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).ticks(5)).selectAll("text").attr("font-size", "10px");
+    cats.forEach(function (c) {
+      techs.forEach(function (t) {
+        var s = get(t, c);
+        if (!s || !(s.mean_W > 0)) return;
+        var cx = x0(c) + x1(t) + x1.bandwidth() / 2;
+        if (s.n < 30 && !isBalanced) {
+          // low-confidence cell (e.g. OLED-small n=17): SHOWN with warning style —
+          // faded bar + red dashed outline + ⚠ label, CI still drawn so its
+          // uncertainty is visible. Fair comparison lives in the Balanced toggle.
+          b.svg.append("rect")
+            .attr("x", x0(c) + x1(t)).attr("y", y(s.mean_W)).attr("width", x1.bandwidth()).attr("rx", 4)
+            .attr("height", Math.max(1, b.h - b.m.bottom - y(s.mean_W)))
+            .attr("fill", TECH_COLORS[t]).attr("opacity", 0.55)
+            .attr("stroke", "#d64545").attr("stroke-width", 2).attr("stroke-dasharray", "5 3")
+            .on("mousemove", function (e) { showTip(e, "<strong>⚠ " + t + " · " + labels[c] + " — LOW CONFIDENCE</strong><br>Mean " + s.mean_W.toFixed(1) + " ± " + s.ci95.toFixed(1) + " W (95% CI)<br>Median " + s.median_W.toFixed(1) + " W · n = " + s.n + " (< 30)<br>Use the Balanced toggle for a fair fight."); })
+            .on("mouseout", hideTip);
+          b.svg.append("line").attr("x1", cx).attr("x2", cx)
+            .attr("y1", y(s.mean_W - s.ci95)).attr("y2", y(s.mean_W + s.ci95))
+            .attr("stroke", "#d64545").attr("stroke-width", 2);
+          b.svg.append("text").attr("x", cx).attr("y", y(s.mean_W + s.ci95) - 10)
+            .attr("text-anchor", "middle").attr("font-size", "10px").attr("font-weight", "800").attr("fill", "#d64545")
+            .text(s.mean_W.toFixed(0) + "W ⚠n=" + s.n);
+          return;
+        }
+        // bar
+        b.svg.append("rect")
+          .attr("x", x0(c) + x1(t)).attr("y", y(s.mean_W)).attr("width", x1.bandwidth()).attr("rx", 4)
+          .attr("height", Math.max(1, b.h - b.m.bottom - y(s.mean_W)))
+          .attr("fill", TECH_COLORS[t]).attr("stroke", "#fff")
+          .on("mousemove", function (e) { showTip(e, "<strong>" + t + " · " + labels[c] + "</strong><br>Mean " + s.mean_W.toFixed(1) + " ± " + s.ci95.toFixed(1) + " W (95% CI)<br>Median " + s.median_W.toFixed(1) + " W · n = " + s.n); })
+          .on("mouseout", hideTip);
+        // CI whisker
+        b.svg.append("line").attr("x1", cx).attr("x2", cx)
+          .attr("y1", y(s.mean_W - s.ci95)).attr("y2", y(s.mean_W + s.ci95))
+          .attr("stroke", "#0f2a44").attr("stroke-width", 2);
+        [s.mean_W - s.ci95, s.mean_W + s.ci95].forEach(function (v) {
+          b.svg.append("line").attr("x1", cx - 7).attr("x2", cx + 7).attr("y1", y(v)).attr("y2", y(v))
+            .attr("stroke", "#0f2a44").attr("stroke-width", 2);
+        });
+        // median dot
+        b.svg.append("circle").attr("cx", cx).attr("cy", y(s.median_W)).attr("r", 3.5)
+          .attr("fill", "#fff").attr("stroke", "#0f2a44").attr("stroke-width", 2)
+          .on("mousemove", function (e) { showTip(e, "Median " + s.median_W.toFixed(1) + " W (white dot)"); })
+          .on("mouseout", hideTip);
+        // two-line label: mean above whisker only — n lives in the stats table below (no more collisions)
+        b.svg.append("text").attr("x", cx).attr("y", y(s.mean_W + s.ci95) - 10)
+          .attr("text-anchor", "middle").attr("font-size", "10px").attr("font-weight", "800").attr("fill", "#0f2a44")
+          .text(s.mean_W.toFixed(0) + "W");
+        // (n= lives in the stats table above — keeps bars readable)
+      });
+    });
+    b.svg.on("mouseleave", hideTip); // tooltip never gets stuck over the bars
+  }
+
+  function drawScatterPower(data) {
+    var b = baseSvg("chart5"); title(b, "Bigger screen → more power"); xLab(b, "Screen size (inches)"); yLab(b, "Power (W)");
+    var x = d3.scaleLinear().domain(d3.extent(data, function (d) { return d.inch; })).nice().range([b.m.left, b.w - b.m.right]);
+    var y = d3.scaleLinear().domain([0, d3.max(data, function (d) { return d.power; })]).nice().range([b.h - b.m.bottom, b.m.top]);
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")").call(d3.axisBottom(x)).selectAll("text").attr("font-size", "10px");
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).ticks(5)).selectAll("text").attr("font-size", "10px");
+    // trend line (least squares)
+    var n = data.length, sx = 0, sy = 0, sxy = 0, sxx = 0;
+    data.forEach(function (d) { sx += d.inch; sy += d.power; sxy += d.inch * d.power; sxx += d.inch * d.inch; });
+    var slope = (n * sxy - sx * sy) / Math.max(1e-9, (n * sxx - sx * sx));
+    var icept = (sy - slope * sx) / n;
+    var xD = x.domain();
+    b.svg.append("line").attr("x1", x(xD[0])).attr("y1", y(slope * xD[0] + icept)).attr("x2", x(xD[1])).attr("y2", y(slope * xD[1] + icept))
+      .attr("stroke", "#c9970d").attr("stroke-width", 2.5).attr("stroke-dasharray", "6 4");
+    b.svg.selectAll("circle.base").data(data.filter(function (d) { return !d.out; })).enter().append("circle")
+      .attr("class", "base")
+      .attr("cx", function (d) { return x(d.inch); }).attr("cy", function (d) { return y(d.power); })
+      .attr("r", 3).attr("fill", function (d) { return TECH_COLORS[d.tech] || "#0072B2"; }).attr("opacity", 0.3)
+      .on("mousemove", function (e, d) { showTip(e, "<strong>" + d.brand + "</strong><br>" + d.inch.toFixed(1) + "\" · " + d.power.toFixed(1) + " W<br>" + d.tech); })
+      .on("mouseout", hideTip);
+    // outliers on top: red ring + label (top 10 by power)
+    var outs = data.filter(function (d) { return d.out; }).sort(function (a, b) { return b.power - a.power; });
+    b.svg.selectAll("circle.out").data(outs).enter().append("circle")
+      .attr("class", "out")
+      .attr("cx", function (d) { return x(d.inch); }).attr("cy", function (d) { return y(d.power); })
+      .attr("r", 6).attr("fill", "none").attr("stroke", "#d64545").attr("stroke-width", 2.5)
+      .on("mousemove", function (e, d) { showTip(e, "<strong>⚠ OUTLIER · " + d.brand + " " + d.model + "</strong><br>" + d.inch.toFixed(1) + "\" · " + d.power.toFixed(1) + " W · Star " + d.star + "<br>" + d.tech + " · " + d.cat); })
+      .on("mouseout", hideTip);
+    outs.slice(0, 8).forEach(function (d) {
+      b.svg.append("text").attr("x", x(d.inch) + 8).attr("y", y(d.power) - 6)
+        .attr("font-size", "9.5px").attr("font-weight", "700").attr("fill", "#d64545")
+        .text(d.brand.split(" ")[0] + " " + d.power.toFixed(0) + "W");
+    });
+  }
+
+  function drawScatterStar(data) {
+    // Boxplot of Star2 per size-class (Star is ordinal/discrete — scatter hid density).
+    // Uses precomputed quartiles in-browser from SizeTech_clean.csv.
+    var b = baseSvg("chart6"); title(b, "Star distribution per size-class (median · IQR)"); xLab(b, "Size class"); yLab(b, "Stars");
+    var cats = ["small", "medium", "large"];
+    var labels = { small: 'Small (<43")', medium: 'Medium (44–65")', large: 'Large (>66")' };
+    var groups = cats.map(function (c) {
+      var vals = data.filter(function (d) {
+        var k = String(d.catRaw || "");
+        return (/small/i.test(k) && c === "small") || (/medium/i.test(k) && c === "medium") || (/large/i.test(k) && c === "large");
+      }).map(function (d) { return d.star; }).filter(function (v) { return v >= 0 && v <= 10; }).sort(d3.ascending);
+      if (!vals.length) return null;
+      return { cat: c, vals: vals, q1: d3.quantile(vals, 0.25), med: d3.quantile(vals, 0.5), q3: d3.quantile(vals, 0.75), n: vals.length };
+    }).filter(Boolean);
+    var x = d3.scaleBand().domain(groups.map(function (g) { return g.cat; })).range([b.m.left, b.w - b.m.right]).padding(0.4);
+    var y = d3.scaleLinear().domain([0, 10]).range([b.h - b.m.bottom, b.m.top]);
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")")
+      .call(d3.axisBottom(x).tickFormat(function (c) { return labels[c]; })).selectAll("text").attr("font-size", "10.5px").attr("font-weight", "600");
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).ticks(5)).selectAll("text").attr("font-size", "10px");
+    groups.forEach(function (g) {
+      var cx = x(g.cat) + x.bandwidth() / 2, w = x.bandwidth() * 0.55;
+      b.svg.append("line").attr("x1", cx).attr("x2", cx).attr("y1", y(d3.min(g.vals))).attr("y2", y(d3.max(g.vals))).attr("stroke", "#1a936f").attr("stroke-width", 2);
+      b.svg.append("rect").attr("x", cx - w / 2).attr("y", y(g.q3)).attr("width", w).attr("height", Math.max(2, y(g.q1) - y(g.q3)))
+        .attr("fill", "#1a936f").attr("opacity", 0.35).attr("stroke", "#1a936f").attr("stroke-width", 2)
+        .on("mousemove", function (e) { showTip(e, "<strong>" + labels[g.cat] + "</strong><br>Median " + g.med + "★ · IQR " + g.q1 + "–" + g.q3 + "<br>n = " + g.n); })
+        .on("mouseout", hideTip);
+      b.svg.append("line").attr("x1", cx - w / 2).attr("x2", cx + w / 2).attr("y1", y(g.med)).attr("y2", y(g.med)).attr("stroke", "#0f2a44").attr("stroke-width", 3);
+      b.svg.append("text").attr("x", cx).attr("y", y(g.med) - 8).attr("text-anchor", "middle")
+        .attr("font-size", "11px").attr("font-weight", "800").attr("fill", "#0f2a44").text("med " + g.med + "★ (n=" + g.n + ")");
+    });
+  }
+
+  function drawCatAvg(data) {
+    var b = baseSvg("chart7a"); title(b, "Avg power by size class (persuasion chart)"); xLab(b, "Size class"); yLab(b, "Mean power (W)");
+    var x = d3.scaleBand().domain(data.map(function (d) { return d.cat; })).range([b.m.left, b.w - b.m.right]).padding(0.3);
+    var y = d3.scaleLinear().domain([0, d3.max(data, function (d) { return d.mean; }) * 1.15]).nice().range([b.h - b.m.bottom, b.m.top]);
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")").call(d3.axisBottom(x)).selectAll("text").attr("font-size", "11px").attr("font-weight", "700");
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).ticks(5)).selectAll("text").attr("font-size", "10px");
+    b.svg.selectAll("rect").data(data).enter().append("rect")
+      .attr("x", function (d) { return x(d.cat); }).attr("y", function (d) { return y(d.mean); })
+      .attr("width", x.bandwidth()).attr("height", function (d) { return b.h - b.m.bottom - y(d.mean); }).attr("rx", 6)
+      .attr("fill", "#1a936f")
+      .on("mousemove", function (e, d) { showTip(e, "<strong>" + d.cat + "</strong><br>Mean " + d.mean.toFixed(1) + " W<br>n = " + d.n); })
+      .on("mouseout", hideTip);
+    b.svg.selectAll("text.v").data(data).enter().append("text")
+      .attr("x", function (d) { return x(d.cat) + x.bandwidth() / 2; }).attr("y", function (d) { return y(d.mean) - 6; })
+      .attr("text-anchor", "middle").attr("font-size", "12px").attr("font-weight", "800").attr("fill", "#0f2a44")
+      .text(function (d) { return d.mean.toFixed(1) + "W (n=" + d.n + ")"; });
+  }
+
+  function drawTechSize(data) {
+    var b = baseSvg("chart7b"); title(b, "Avg screen size by technology"); xLab(b, "Technology"); yLab(b, "Mean size (inch)");
+    var x = d3.scaleBand().domain(data.map(function (d) { return d.tech; })).range([b.m.left, b.w - b.m.right]).padding(0.3);
+    var y = d3.scaleLinear().domain([0, d3.max(data, function (d) { return d.mean; }) * 1.2]).nice().range([b.h - b.m.bottom, b.m.top]);
+    b.svg.append("g").attr("transform", "translate(0," + (b.h - b.m.bottom) + ")").call(d3.axisBottom(x)).selectAll("text").attr("font-size", "11px").attr("font-weight", "700");
+    b.svg.append("g").attr("transform", "translate(" + b.m.left + ",0)").call(d3.axisLeft(y).ticks(5)).selectAll("text").attr("font-size", "10px");
+    b.svg.selectAll("rect").data(data).enter().append("rect")
+      .attr("x", function (d) { return x(d.tech); }).attr("y", function (d) { return y(d.mean); })
+      .attr("width", x.bandwidth()).attr("height", function (d) { return b.h - b.m.bottom - y(d.mean); }).attr("rx", 6)
+      .attr("fill", function (d) { return TECH_COLORS[d.tech] || "#0f2a44"; })
+      .on("mousemove", function (e, d) { showTip(e, "<strong>" + d.tech + "</strong><br>Mean " + d.mean.toFixed(1) + "\"<br>n = " + d.n); })
+      .on("mouseout", hideTip);
+    b.svg.selectAll("text.v").data(data).enter().append("text")
+      .attr("x", function (d) { return x(d.tech) + x.bandwidth() / 2; }).attr("y", function (d) { return y(d.mean) - 6; })
+      .attr("text-anchor", "middle").attr("font-size", "12px").attr("font-weight", "800").attr("fill", "#0f2a44")
+      .text(function (d) { return d.mean.toFixed(1) + "\""; });
+  }
+
+  d3.csv("knime_output/SizeTech_clean.csv").then(function (tvs) {
+    var rows = tvs.map(function (d) {
+      return { inch: +d.screensize_inch, power: +d.Avg_mode_power, star: +d.Star2, tech: (d.Screen_Tech || "").trim(), brand: d.Brand_clean || d.Brand_Reg || "—", model: d.Model_No || "", out: String(d.is_outlier_IQR).toUpperCase() === "TRUE", catRaw: d.size_category || "" };
+    }).filter(function (d) { return d.inch > 0; });
+    window.__redrawAll = function () {
+      if (document.getElementById("televisions").classList.contains("visible")) {
+        var techCounts = d3.rollup(rows, function (v) { return v.length; }, function (d) { return d.tech; });
+        drawPie(Array.from(techCounts, function (e) { return { tech: e[0], n: e[1] }; }).filter(function (d) { return d.tech; }));
+        var sizeCounts = d3.rollup(rows, function (v) { return v.length; }, function (d) { return Math.round(d.inch); });
+        drawSizes(Array.from(sizeCounts, function (e) { return { inch: e[0], n: e[1] }; }).sort(function (a, b) { return a.inch - b.inch; }));
+        drawScatterPower(rows.filter(function (d) { return d.power > 0; }).slice(0, 4508));
+        drawScatterStar(rows.filter(function (d) { return d.star >= 0 && d.star <= 10; }).slice(0, 4508));
+        drawPivot(pivotMode === "balanced" ? pivotBalStats : pivotRawStats, pivotMode === "balanced");
+      }
+    };
+    var techCounts = d3.rollup(rows, function (v) { return v.length; }, function (d) { return d.tech; });
+    drawPie(Array.from(techCounts, function (e) { return { tech: e[0], n: e[1] }; }).filter(function (d) { return d.tech; }));
+    var sizeCounts = d3.rollup(rows, function (v) { return v.length; }, function (d) { return Math.round(d.inch); });
+    drawSizes(Array.from(sizeCounts, function (e) { return { inch: e[0], n: e[1] }; }).sort(function (a, b) { return a.inch - b.inch; }));
+    drawScatterPower(rows.filter(function (d) { return d.power > 0; }).slice(0, 4508));
+    drawScatterStar(rows.filter(function (d) { return d.star >= 0 && d.star <= 10; }).slice(0, 4508));
+    // 06a: mean power per size_category (DQ2c) — normalise KNIME labels small/medium/large
+    var catRoll = d3.rollup(rows.filter(function (d) { return d.power > 0; }),
+      function (v) { return { mean: d3.mean(v, function (x) { return x.power; }), n: v.length }; },
+      function (d) {
+        var c = String(d.catRaw || "");
+        if (/small/i.test(c)) return "small (<43\")";
+        if (/large/i.test(c)) return "large (>66\")";
+        return "medium (44-65\")";
+      });
+    var order = ["small (<43\")", "medium (44-65\")", "large (>66\")"];
+    drawCatAvg(order.filter(function (k) { return catRoll.has(k); }).map(function (k) { return { cat: k, mean: catRoll.get(k).mean, n: catRoll.get(k).n }; }));
+    // 06b: mean size per tech (DQ3b)
+    var techRoll = d3.rollup(rows, function (v) { return { mean: d3.mean(v, function (x) { return x.inch; }), n: v.length }; }, function (d) { return d.tech; });
+    drawTechSize(Array.from(techRoll, function (e) { return { tech: e[0], mean: e[1].mean, n: e[1].n }; }).filter(function (d) { return d.tech; }));
+  }).catch(function () { fail("chart1", "fb1", "Could not load knime_output/SizeTech_clean.csv — run via serve.py (not file://). Showing KNIME PNG fallback below."); ["chart2","chart5","chart6"].forEach(function (id) { var el = document.getElementById(id); if (el && !el.innerHTML) el.innerHTML = '<div class="chart-error">Same CSV missing — see note on chart 01.</div>'; }); var f = document.getElementById("fb5"); if (f) f.style.display = "block"; });
+
+  d3.csv("knime_output/BrandCount_clean.csv").then(function (brands) {
+    var rows = brands.map(function (d) {
+      var brand = d.Brand_Reg_clean || d.Brand_Reg || d.brand || d.Brand || "UNKNOWN";
+      var count = +(d.Model_Count || d["Count(SoldIn)"] || d.count || d.Count || 0);
+      return { brand: String(brand).trim(), count: count };
+    }).filter(function (d) { return d.count > 0; }).sort(function (a, b) { return b.count - a.count; });
+    if (!rows.length) throw new Error("empty");
+    drawBrands(rows.slice(0, 10));
+  }).catch(function () { fail("chart3", "fb3", "Could not load knime_output/BrandCount_clean.csv — check the file has Brand + Count columns."); });
+
+  var pivotMode = "balanced", pivotRawStats = null, pivotBalStats = null;
+  function setPivot(m) {
+    pivotMode = m;
+    var r = document.getElementById("pivotRaw"), bl = document.getElementById("pivotBal");
+    if (r) r.classList.toggle("active", m === "raw");
+    if (bl) bl.classList.toggle("active", m === "balanced");
+    var s = m === "balanced" ? pivotBalStats : pivotRawStats;
+    drawPivot(s, m === "balanced");
+    drawPivotTable(s, m === "balanced");
+  }
+  window.setPivot = setPivot; // inline onclick= needs a global
+
+  d3.csv("knime_output/Pivot_Tech_x_Size_stats.csv").then(function (stats) {
+    stats.forEach(function (s) {
+      s.Screen_Tech = (s.Screen_Tech || "").trim();
+      s.size_category = (s.size_category || "").trim();
+      s.mean_W = +s.mean_W; s.median_W = +s.median_W; s.std_W = +s.std_W; s.n = +s.n; s.ci95 = +s.ci95;
+    });
+    drawPivot(stats);
+    pivotRawStats = stats;
+    drawPivotTable(stats);
+    if (pivotMode === "balanced" && pivotBalStats) setPivot("balanced"); else setPivot("raw");
+    var rb = document.getElementById("pivotRaw"); if (rb) rb.classList.add("active");
+    // balanced file shares the same long schema (recomputed from SizeTech_equal_sampled.csv)
+    d3.csv("knime_output/Pivot_Tech_x_Size_balanced.csv").then(function (b) {
+      b.forEach(function (s) {
+        s.Screen_Tech = (s.Screen_Tech || "").trim();
+        s.size_category = (s.size_category || "").trim();
+        s.mean_W = +s.mean_W; s.median_W = +s.median_W; s.std_W = +s.std_W; s.n = +s.n; s.ci95 = +s.ci95;
+      });
+      pivotBalStats = b;
+      setPivot("balanced"); // default view = fair fight; Raw stays one click away
+    }).catch(function () { var bl = document.getElementById("pivotBal"); if (bl) bl.disabled = true; setPivot("raw"); });
+  }).catch(function () { fail("chart4", "fb4", "Could not load knime_output/Pivot_Tech_x_Size_stats.csv."); });
+})();
+</script>
+</body>
+</html>

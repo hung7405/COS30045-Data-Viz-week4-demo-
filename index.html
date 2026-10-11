@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TV Energy in Australia — which TV should you buy to save power?</title>
+<meta name="description" content="Interactive data story of 4,508 TVs on sale in Australia: size, brand, technology, stars and standby power.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="progress"></div>
+<div id="wipe"></div>
+<div id="boot" aria-hidden="true"><div class="beam"></div><div class="bootlbl">TV ENERGY · AUSTRALIA</div></div>
+<div class="tt" id="tt" role="tooltip"></div>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="5" width="28" height="18" rx="4" fill="none" stroke="#56B4E9" stroke-width="2.4"/><path d="M17.5 8l-5 8h4l-1.5 6 6-8.5h-4z" fill="#f5c542"/><path d="M10 28h12" stroke="#56B4E9" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>TV Energy AU</span>
+    </div>
+    <nav class="tabs" aria-label="Main navigation">
+      <i id="tabPill"></i>
+      <button data-go="home">Overview</button>
+      <button data-go="story">Story</button>
+      <button data-go="finder">Finder</button>
+      <button data-go="method">Method</button>
+    </nav>
+  </div>
+</header>
+
+<div class="rail" id="rail" hidden aria-label="Chapters"></div>
+
+<main id="stage">
+
+<!-- ================= OVERVIEW ================= -->
+<section class="scene" id="s-home">
+  <div class="wrap">
+    <div class="hero">
+      <div class="floor"><i></i></div>
+      <div>
+        <h1>Which TV should Australia buy to save power?</h1>
+        <p class="lead">We read every one of the <b data-bind="n">4,508</b> televisions on sale in Australia, from the Feb 2026 energy-rating register. The answer fits in one sentence: <b>choose the size first</b>. Everything else moves your bill far less.</p>
+        <div class="hero-cta">
+          <button class="btn primary" data-go="story">Read the story</button>
+          <button class="btn ghost" data-go="finder">Find an efficient TV</button>
+        </div>
+      </div>
+      <div class="tv-stage" id="tvStage">
+        <div class="tv-rig" id="tvRig">
+          <div class="glow" id="tvGlow"></div>
+          <div class="tv" id="tv">
+            <div class="f back"></div><div class="f sl"></div><div class="f sr2"></div><div class="f st"></div><div class="f sb"></div>
+            <div class="f front"><canvas id="tvCanvas" width="640" height="360"></canvas></div>
+            <div class="neck"></div><div class="foot"></div><div class="shadow"></div>
+          </div>
+        </div>
+        <div class="float f-w"><div class="big"><span id="fW">105</span><small>W</small></div><div class="sm">average power in use</div></div>
+        <div class="float f-c"><div class="big"><span id="fC">$62</span><small>/ year</small></div><div class="sm" id="fCs">5 h a day · 32¢/kWh</div></div>
+        <div class="float f-s" id="fS">55″ medium</div>
+        <div class="size-seg" id="heroSeg" role="group" aria-label="TV size">
+          <button data-p="small" aria-pressed="false">Small</button>
+          <button data-p="medium" aria-pressed="true">Medium</button>
+          <button data-p="large" aria-pressed="false">Large</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis" data-reveal>
+      <div class="kpi"><div class="n"><span data-count data-to="4508"></span></div><p>TV models currently on sale in Australia</p></div>
+      <div class="kpi"><div class="n"><span data-count data-bindto="ratio" data-dec="1"></span><small>×</small></div><p>more power drawn by a large TV than a small one</p></div>
+      <div class="kpi"><div class="n"><span data-count data-bindto="ledShare"></span><small>%</small></div><p>of models are LCD (LED), the market standard</p></div>
+      <div class="kpi"><div class="n"><span data-count data-bindto="brandSpread"></span><small>pts</small></div><p>spread between the leanest and hungriest brand (50+ models) at the same size</p></div>
+    </div>
+
+    <div class="sec-head" data-reveal>
+      <h2>What will your TV cost to run?</h2>
+      <p>Pick a size, then set how long it is on and what you pay per kWh. The TV above resizes with you.</p>
+    </div>
+    <div class="panel calc" data-reveal>
+      <div class="in">
+        <div class="presets" id="presets" role="group" aria-label="Size preset"></div>
+        <div class="field"><label for="rW">Power in use <output id="oW">105 W</output></label><input type="range" id="rW" min="10" max="400" step="1"></div>
+        <div class="field"><label for="rH">Viewing per day <output id="oH">5 h</output></label><input type="range" id="rH" min="0.5" max="16" step="0.5"></div>
+        <div class="field"><label for="rC">Electricity price <output id="oC">32¢/kWh</output></label><input type="range" id="rC" min="10" max="80" step="1"></div>
+        <p class="fine" id="labelNote"></p>
+      </div>
+      <div class="out">
+        <div class="gauge"><svg viewBox="0 0 400 230" aria-hidden="true"><path id="gBg" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="22" stroke-linecap="round"/><path id="gFg" fill="none" stroke="url(#gg)" stroke-width="22" stroke-linecap="round"/><defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#56B4E9"/><stop offset="1" stop-color="#f5c542"/></linearGradient></defs><text x="28" y="222" font-size="13" fill="#7590ad" text-anchor="middle">$0</text><text x="372" y="222" font-size="13" fill="#7590ad" text-anchor="middle" id="gMax">$300</text></svg>
+          <div class="val"><b id="cYear">$62</b><span>estimated per year</span></div></div>
+        <div class="minis"><div><span>Per month</span><b id="cMonth">$5.1</b></div><div><span>Energy per year</span><b id="cKwh">192 kWh</b></div><div><span>Per hour of TV</span><b id="cHour">3.4¢</b></div></div>
+        <div class="cmp" id="cmp"></div>
+        <p class="fine" id="cFormula"></p>
+      </div>
+    </div>
+
+    <div class="sec-head" data-reveal>
+      <h2>Three rules, in order of impact</h2>
+      <p>Tap or hover a card to see the evidence behind it.</p>
+    </div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+</section>
+
+<!-- ================= STORY ================= -->
+<section class="scene" id="s-story" hidden>
+  <div class="wrap">
+    <div class="story-hero">
+      <h1>Eight charts that explain the TV market</h1>
+      <p>Each chapter asks one question, shows the answer, and says what it means for a buyer. Every chart is drawn live from the 4,508 models, and most have a switch so you can look at the same data another way.</p>
+    </div>
+    <div id="chapters"></div>
+    <div class="end-verdict" data-reveal>
+      <h2>What to tell a shopper</h2>
+      <ol id="endList"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINDER ================= -->
+<section class="scene" id="s-finder" hidden>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Find the leanest TV for your room</h2>
+      <p>Filter all 4,508 models, then click a dot or a row. Dots outside your filter fade out; the gold line traces the lowest power at each size.</p>
+    </div>
+    <div class="finder">
+      <aside class="panel filters">
+        <h3>Filters</h3>
+        <div class="field"><label>Screen size <output id="fSize">15–115″</output></label>
+          <input type="range" id="fMin" min="15" max="115" step="1" value="15" aria-label="Minimum size">
+          <input type="range" id="fMax" min="15" max="115" step="1" value="115" aria-label="Maximum size" style="margin-top:14px">
+          <div class="chips" style="margin-top:12px" id="fCls"></div></div>
+        <div class="field"><label>Technology</label><div class="chips" id="fTech"></div></div>
+        <div class="field"><label for="fBrand">Brand</label><select id="fBrand"></select></div>
+        <div class="field"><label for="fStar">Minimum stars <output id="oStar">any</output></label><input type="range" id="fStar" min="1" max="8" step="0.5" value="1"></div>
+        <div class="field" style="margin-bottom:0"><label for="fSort">Rank list by</label>
+          <select id="fSort"><option value="idx">Leanest for its size</option><option value="w">Lowest watts</option><option value="r">Highest star index</option></select>
+          <button class="mini-btn" id="fReset">Reset filters</button></div>
+      </aside>
+      <div class="results">
+        <div class="panel usage">
+          <div class="field"><label for="uH">Viewing per day <output id="uHo">5 h</output></label><input type="range" id="uH" min="0.5" max="16" step="0.5"></div>
+          <div class="field"><label for="uC">Electricity price <output id="uCo">32¢/kWh</output></label><input type="range" id="uC" min="10" max="80" step="1"></div>
+        </div>
+        <div class="res-top" id="resTop"></div>
+        <div class="panel scatter-panel">
+          <div class="panel-head"><h3>Every model: size vs power</h3><div class="legend" id="finderLegend"></div></div>
+          <div class="sc" id="finderSc"></div>
+        </div>
+        <div class="panel detail" id="detail" hidden></div>
+        <div class="panel table-panel">
+          <table><thead><tr><th>Brand and model</th><th class="r">Size</th><th>Tech</th><th class="r">Watts</th><th class="r">Stars</th><th class="r">Per year</th><th class="r">vs same size</th></tr></thead><tbody id="tbody"></tbody></table>
+          <div style="text-align:center;margin-top:12px"><button class="btn ghost" id="more" style="padding:10px 20px;font-size:14.5px">Show more</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section class="scene" id="s-method" hidden>
+  <div class="wrap">
+    <div class="story-hero">
+      <h1>How the data was prepared</h1>
+      <p>Dataset <code>tv_2026_02_15.csv</code>: 4,724 rows and 32 columns from the Australian Energy Rating register (data.gov.au), downloaded 15 Feb 2026 and pinned to that version.</p>
+    </div>
+    <div class="panel" style="padding:30px;margin-bottom:22px" data-reveal>
+      <h3 style="font-size:23px;margin-bottom:6px">From 4,724 rows to 4,508 models</h3>
+      <div class="funnel" id="funnel"></div>
+      <h3 style="font-size:23px;margin:30px 0 4px">12 of 32 columns put to work</h3>
+      <p style="color:var(--ink2)">The first version of this site used four. Gold chips are the columns used here.</p>
+      <div class="cols" id="cols"></div>
+    </div>
+    <div class="method-grid">
+      <div class="panel" data-reveal><h3>Audience and story</h3><p>Australian shoppers comparing TVs. The story runs from market overview, to sizes, brands and a fair power comparison, to one buying rule. Every chapter follows question, chart, so what.</p></div>
+      <div class="panel" data-reveal><h3>Cleaning steps</h3><ul><li>Brands upper-cased; SAMSUNG ELECTRONICS merged into SAMSUNG; Q.BELL into QBELL; S VISION into SVISION (74 brands).</li><li>Kept only <code>Available</code> models whose <code>SoldIn</code> contains Australia.</li><li>Inches = <code>screensize</code> ÷ 2.54. Size class: small under 43″, medium 43–65″, large above 65″.</li><li>Standby: <code>-</code> read as missing (17.7% of models), never as zero.</li></ul></div>
+      <div class="panel" data-reveal><h3>Size-fair index</h3><p>To compare brands and technologies without size getting in the way, each model's power is divided by the median power of TVs within 2 inches of its size, then multiplied by 100. A score of 100 is typical for that size; 80 uses 20% less.</p></div>
+      <div class="panel" data-reveal><h3>Accuracy, privacy and ethics</h3><p>A catalogue snapshot: there are no sales, prices or dates sold, so shelf share is not market share and nothing here is a trend. Product data only, no personal information. Charts show association, not causation. Groups under 30 models (small OLED, n=17) are flagged, not ranked. No brand is promoted.</p></div>
+      <div class="panel" data-reveal><h3>Technology</h3><p>HTML, CSS and JavaScript with D3.js v7 for 2D charts. Depth effects are CSS 3D transforms on the page, never on the charts: 3D charts hide values behind perspective, so every chart here is flat and labelled.</p></div>
+      <div class="panel" data-reveal><h3>AI declaration</h3><p>Generative AI (Copilot and Claude) assisted with code suggestions, KNIME error explanations and wording. All output was reviewed and understood by the author.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><b>Truong Viet Hung — 104775470</b> · COS30045 Data Visualisation · TV Energy Australia · GenAI-assisted, author-verified</footer>
+
+
+<script src="js/d3.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
